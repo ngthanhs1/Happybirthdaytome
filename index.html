@@ -1,8 +1,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Cuoi len di</title>
-        <link rel="Shortcut Icon" href="https://i.pinimg.com/236x/a5/20/de/a520deb545fea9b62776e6bea5d77928.jpg" type="image/x-icon" />
+        <title>Happy Birthday Chồng Yêu</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
         <!--<meta itemprop="image" content="./images/fenxiang.png" />-->
@@ -12,7 +11,6 @@
             }
             body {
                 font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
-                background: #79a8ae;
                 color: #CFEBE4;
                 font-size: 18px;
                 line-height: 2;
@@ -22,22 +20,17 @@
             a {
                 color: #ebf7f4;
             }
-            .body--ready {
-                background: -webkit-linear-gradient(top, rgb(203, 235, 219) 0%, rgb(55, 148, 192) 120%);
-                background: -moz-linear-gradient(top, rgb(203, 235, 219) 0%, rgb(55, 148, 192) 120%);
-                background: -o-linear-gradient(top, rgb(203, 235, 219) 0%, rgb(55, 148, 192) 120%);
-                background: -ms-linear-gradient(top, rgb(203, 235, 219) 0%, rgb(55, 148, 192) 120%);
-                background: linear-gradient(top, rgb(203, 235, 219) 0%, rgb(55, 148, 192) 120%);
-            }
             .text {
                 position: fixed;
                 bottom: 100px;
                 text-align: center;
                 width: 100%;
             }
-            .canvas {
-                margin: 0 auto;
-                display: block;
+            canvas {
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 0;
             }
             img#logo {
                 width: 128px;
@@ -87,39 +80,47 @@
     </head>
     
     <body>
-    <div class="cs">
-        <img src="https://1.bp.blogspot.com/-ciJx92ftXls/YGLZXgbmRgI/AAAAAAAArCg/iA9A_uU0qewj8ZgCpv6mCRqNuvo2YlZZACNcBGAsYHQ/s0/1d83a6d88d8be5b041a9a98fd5048311.jpeg" id="logo">
-    </div>
+    <canvas id="rainCanvas"></canvas>
     <canvas class="canvas" width="1820" height="905"></canvas>
-    <p class="text" style="color: #ed3073;">Đã đươc
-    <span id="span_dt_dt"></span><br> quen nhau rùi đấy😘
-    </p>
     <script language="javascript">
-        function show_date_time() {
-            window.setTimeout("show_date_time()", 1000);
-            BirthDay = new Date("04/03/2024 08:30:00");
-            today = new Date();
-            timeold = (today.getTime() - BirthDay.getTime());
-            sectimeold = timeold / 1000
-            secondsold = Math.floor(sectimeold);
-            msPerDay = 24 * 60 * 60 * 1000
-            e_daysold = timeold / msPerDay
-            daysold = Math.floor(e_daysold);
-            e_hrsold = (e_daysold - daysold) * 24;
-            hrsold = Math.floor(e_hrsold);
-            e_minsold = (e_hrsold - hrsold) * 60;
-            minsold = Math.floor((e_hrsold - hrsold) * 60);
-            seconds = Math.floor((e_minsold - minsold) * 60);
-            span_dt_dt.innerHTML = daysold + " Ngày " + hrsold + " Giờ " + minsold + " Phút " + seconds + " Giây ";
+        
+        const canvas = document.getElementById('rainCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         }
-        show_date_time();
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const letters = 'I LOVE U'.split('');
+        const fontSize = 16;
+        let columns = Math.floor(window.innerWidth / fontSize);
+        const drops = Array(columns).fill(1);
+
+        function drawRainBackground() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#f584b7';
+            ctx.font = fontSize + 'px arial';
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height || Math.random() > 0.95) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawRainBackground, 50);
     </script>
     <script>
+        
         var S = {
             init: function () {
                 S.Drawing.init('.canvas');
                 document.body.classList.add('body--ready');
-                S.UI.simulate("Chào cậu|Cậu|biết|Gì chưa|#countdown 3|Cậu đã| Mập lên| Rồi đấy|Bất ngờ chưa|Bà già|#time|❤️");
+                S.UI.simulate("3|2|1|HAPPY | BIRTHDAY| Chồng Yêu| Của Em|Ngày Sinh Nhật|Thật Vui Vẻ|#time|❤️");
                 S.Drawing.loop(function () {
                     S.Shape.render();
                 });
@@ -571,12 +572,14 @@
             };
         }());
         S.init();
+
+    const audio = new Audio("./ly.mp3");
+function handleClick() {
+   audio.play();
+   window.removeEventListener('click', handleClick);
+}
+window.addEventListener('click', handleClick);
     </script>
-    <dev>
-        <audio autoplay>
-            <source src="https://play.imusicvn.com/stream/Mgbb1byycZvy" type="audio/mpeg">
-        </audio>
-    </dev>
 
 </body>
 </html>
