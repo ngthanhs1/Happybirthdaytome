@@ -6,31 +6,48 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
         <!--<meta itemprop="image" content="./images/fenxiang.png" />-->
         <style>
-            html {
+            html, body {
                 height: 100%;
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
             }
             body {
                 font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
                 color: #CFEBE4;
-                font-size: 18px;
+                font-size: 2.5vw;
                 line-height: 2;
                 letter-spacing: 1.2px;
-                margin: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100vw;
+                height: 100vh;
+                overflow: hidden;
+                background: #000;
             }
             a {
                 color: #ebf7f4;
             }
             .text {
-                position: fixed;
-                bottom: 100px;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
                 text-align: center;
-                width: 100%;
+                width: 90vw;
+                font-size: 2.5vw;
+                font-weight: bold;
+                z-index: 2;
             }
             canvas {
                 position: absolute;
                 top: 0;
                 left: 0;
+                width: 100vw !important;
+                height: 100vh !important;
                 z-index: 0;
+                pointer-events: none;
             }
             img#logo {
                 width: 128px;
@@ -81,7 +98,7 @@
     
     <body>
     <canvas id="rainCanvas"></canvas>
-    <canvas class="canvas" width="1820" height="905"></canvas>
+    <canvas class="canvas"></canvas>
     <script language="javascript">
         
         const canvas = document.getElementById('rainCanvas');
@@ -93,6 +110,7 @@
         }
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('orientationchange', resizeCanvas);
 
         const letters = 'I LOVE U'.split('');
         const fontSize = 16;
@@ -115,12 +133,23 @@
         setInterval(drawRainBackground, 50);
     </script>
     <script>
-        
+        // Hiển thị chữ ở giữa màn hình
+        function showCenterText(text) {
+            let textDiv = document.querySelector('.text');
+            if (!textDiv) {
+                textDiv = document.createElement('div');
+                textDiv.className = 'text';
+                document.body.appendChild(textDiv);
+            }
+            textDiv.innerHTML = text;
+        }
+
         var S = {
             init: function () {
                 S.Drawing.init('.canvas');
                 document.body.classList.add('body--ready');
                 S.UI.simulate("3|2|1|HAPPY | BIRTHDAY| Chồng Yêu| Của Em|Ngày Sinh Nhật|Thật Vui Vẻ|#time|❤️");
+                showCenterText("HAPPY BIRTHDAY Chồng Yêu Của Em");
                 S.Drawing.loop(function () {
                     S.Shape.render();
                 });
@@ -574,11 +603,11 @@
         S.init();
 
     const audio = new Audio("./ly.mp3");
-function handleClick() {
-   audio.play();
-   window.removeEventListener('click', handleClick);
-}
-window.addEventListener('click', handleClick);
+    function playMusic() {
+        audio.play();
+    }
+    window.addEventListener('click', playMusic);
+    window.addEventListener('touchstart', playMusic);
     </script>
 
 </body>
