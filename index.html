@@ -133,23 +133,12 @@
         setInterval(drawRainBackground, 50);
     </script>
     <script>
-        // Hiển thị chữ ở giữa màn hình
-        function showCenterText(text) {
-            let textDiv = document.querySelector('.text');
-            if (!textDiv) {
-                textDiv = document.createElement('div');
-                textDiv.className = 'text';
-                document.body.appendChild(textDiv);
-            }
-            textDiv.innerHTML = text;
-        }
-
         var S = {
             init: function () {
                 S.Drawing.init('.canvas');
                 document.body.classList.add('body--ready');
                 S.UI.simulate("3|2|1|HAPPY | BIRTHDAY| Chồng Yêu| Của Em|Ngày Sinh Nhật|Thật Vui Vẻ|#time|❤️");
-                showCenterText("HAPPY BIRTHDAY Chồng Yêu Của Em");
+                // showCenterText("HAPPY BIRTHDAY Chồng Yêu Của Em");
                 S.Drawing.loop(function () {
                     S.Shape.render();
                 });
