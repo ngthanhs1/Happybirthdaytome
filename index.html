@@ -36,9 +36,32 @@
                 transform: translate(-50%, -50%);
                 text-align: center;
                 width: 90vw;
-                font-size: 1.5rem;
+                font-size: 4vw;
                 font-weight: bold;
                 z-index: 2;
+                display: none;
+            }
+            .rotate-warning {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                text-align: center;
+                width: 90vw;
+                font-size: 2.2vw;
+                font-weight: bold;
+                color: #fff;
+                background: rgba(0,0,0,0.7);
+                z-index: 10;
+                display: block;
+            }
+            @media screen and (orientation: landscape) {
+                .text {
+                    display: block;
+                }
+                .rotate-warning {
+                    display: none;
+                }
             }
             canvas {
                 position: absolute;
@@ -67,7 +90,7 @@
                 transform: rotate(360deg);
                 -ms-transform: rotate(360deg); /* IE 9 */
                 -moz-transform: rotate(360deg); /* Firefox */
-                -webkit-transform: rotate(360deg); /* Safari 和 Chrome */
+                -webkit-transform: rotate(360deg); /* Safari và Chrome */
                 -o-transform: rotate(360deg); /* Opera */
                 filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
             }
@@ -77,13 +100,6 @@
                 margin: 0 auto;
                 position: absolute;
                 text-align: center;
-            }
-            .text {
-                position: fixed;
-                bottom: 20px;
-                text-align: center;
-                width: 100%;
-                font-weight: bold;
             }
             .text-right {
                 position: fixed;
@@ -99,6 +115,8 @@
     <body>
     <canvas id="rainCanvas"></canvas>
     <canvas class="canvas"></canvas>
+    <!-- <div class="text">Chồng Yêu Của Em</div> -->
+    <div class="rotate-warning">Xoay ngang</div>
     <script language="javascript">
         
         const canvas = document.getElementById('rainCanvas');
@@ -137,8 +155,9 @@
             init: function () {
                 S.Drawing.init('.canvas');
                 document.body.classList.add('body--ready');
-                S.UI.simulate("3|2|1|HAPPY | BIRTHDAY| Chồng Yêu| Của Em|Ngày Sinh Nhật|Thật Vui Vẻ|#time|❤️");
-                // showCenterText("HAPPY BIRTHDAY Chồng Yêu Của Em");
+                // Hiển thị HAPPY ở trên, BIRTHDAY ở dưới
+                // Hiển thị HAPPY trên, BIRTHDAY dưới (hai dòng)
+                S.UI.simulate("3|2|1|HAPPY|BIRTHDAY|Chồng Yêu|Của Em|Ngày Sinh Nhật|Thật Vui Vẻ|❤️");
                 S.Drawing.loop(function () {
                     S.Shape.render();
                 });
@@ -399,7 +418,7 @@
             var gap = 13,
                 shapeCanvas = document.createElement('canvas'),
                 shapeContext = shapeCanvas.getContext('2d'),
-                fontSize = 500,
+                fontSize = 700,
                 fontFamily = 'Avenir, Helvetica Neue, Helvetica, Arial, sans-serif';
             function fit() {
                 shapeCanvas.width = Math.floor(window.innerWidth / gap) * gap;
@@ -441,6 +460,9 @@
             function setFontSize(s) {
                 shapeContext.font = 'bold ' + s + 'px ' + fontFamily;
             }
+            function setFontColor(color) {
+                shapeContext.fillStyle = color;
+            }
             function isNumber(n) {
                 return !isNaN(parseFloat(n)) && isFinite(n);
             }
@@ -481,6 +503,7 @@
                         (shapeCanvas.height / fontSize) * (isNumber(l) ? 1 : 0.45) * fontSize);
                     setFontSize(s);
                     shapeContext.clearRect(0, 0, shapeCanvas.width, shapeCanvas.height);
+                    setFontColor('pink'); // Đổi màu chữ tại đây (hồng)
                     shapeContext.fillText(l, shapeCanvas.width / 2, shapeCanvas.height / 2);
                     return processCanvas();
                 },
