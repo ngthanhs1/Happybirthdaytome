@@ -129,8 +129,8 @@
         window.addEventListener('resize', resizeCanvas);
         window.addEventListener('orientationchange', resizeCanvas);
 
-        const letters = 'I LOVE U'.split('');
-        const fontSize = 16;
+        const letters = 'I LOVE YOU'.split('');
+        const fontSize = 22;
         let columns = Math.floor(window.innerWidth / fontSize);
         const drops = Array(columns).fill(1);
 
@@ -154,9 +154,7 @@
             init: function () {
                 S.Drawing.init('.canvas');
                 document.body.classList.add('body--ready');
-                // Hiển thị HAPPY ở trên, BIRTHDAY ở dưới
-                // Hiển thị HAPPY trên, BIRTHDAY dưới (hai dòng)
-                S.UI.simulate("3|2|1|HAPPY|BIRTHDAY|Chồng Yêu|Của Em|Ngày Sinh Nhật|Thật Vui Vẻ|❤️");
+                S.UI.simulate("3|2|1|HAPPY|BIRTHDAY|NGƯỜI YÊU|CỦA EM|NGÀY SINH NHẬT|VUI VẺ|MOA MOA");
                 S.Drawing.loop(function () {
                     S.Shape.render();
                 });
@@ -417,7 +415,7 @@
             var gap = 13,
                 shapeCanvas = document.createElement('canvas'),
                 shapeContext = shapeCanvas.getContext('2d'),
-                fontSize = 700,
+                fontSize = 700, // <-- chỉnh số này lớn hơn để chữ to hơn
                 fontFamily = 'Avenir, Helvetica Neue, Helvetica, Arial, sans-serif';
             function fit() {
                 shapeCanvas.width = Math.floor(window.innerWidth / gap) * gap;
@@ -428,24 +426,23 @@
             }
             function processCanvas() {
                 var pixels = shapeContext.getImageData(0, 0, shapeCanvas.width, shapeCanvas.height).data;
-                dots = [],
-                    pixels,
+                var dots = [],
                     x = 0,
                     y = 0,
-                    fx = shapeCanvas.width,
-                    fy = shapeCanvas.height,
-                    w = 0,
-                    h = 0;
+                    minX = shapeCanvas.width,
+                    minY = shapeCanvas.height,
+                    maxX = 0,
+                    maxY = 0;
                 for (var p = 0; p < pixels.length; p += (4 * gap)) {
                     if (pixels[p + 3] > 0) {
                         dots.push(new S.Point({
                             x: x,
                             y: y
                         }));
-                        w = x > w ? x : w;
-                        h = y > h ? y : h;
-                        fx = x < fx ? x : fx;
-                        fy = y < fy ? y : fy;
+                        if (x < minX) minX = x;
+                        if (y < minY) minY = y;
+                        if (x > maxX) maxX = x;
+                        if (y > maxY) maxY = y;
                     }
                     x += gap;
                     if (x >= shapeCanvas.width) {
@@ -454,7 +451,15 @@
                         p += gap * 4 * shapeCanvas.width;
                     }
                 }
-                return {dots: dots, w: w + fx, h: h + fy};
+                // width/height chính xác hơn
+                var width = maxX - minX;
+                var height = maxY - minY;
+                // Dời điểm về giữa
+                for (var i = 0; i < dots.length; i++) {
+                    dots[i].x -= minX;
+                    dots[i].y -= minY;
+                }
+                return {dots: dots, w: width, h: height};
             }
             function setFontSize(s) {
                 shapeContext.font = 'bold ' + s + 'px ' + fontFamily;
@@ -502,7 +507,7 @@
                         (shapeCanvas.height / fontSize) * (isNumber(l) ? 1 : 0.45) * fontSize);
                     setFontSize(s);
                     shapeContext.clearRect(0, 0, shapeCanvas.width, shapeCanvas.height);
-                    setFontColor('pink'); // Đổi màu chữ tại đây (hồng)
+                    setFontColor('blue'); // Đổi màu chữ tại đây (xanh dương)
                     shapeContext.fillText(l, shapeCanvas.width / 2, shapeCanvas.height / 2);
                     return processCanvas();
                 },
