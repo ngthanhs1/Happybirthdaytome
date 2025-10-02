@@ -154,7 +154,7 @@
             init: function () {
                 S.Drawing.init('.canvas');
                 document.body.classList.add('body--ready');
-                S.UI.simulate("3|2|1|HAPPY|BIRTHDAY|NGƯỜI YÊU|CỦA EM|NGÀY SINH NHẬT|VUI VẺ|MOA MOA");
+                    S.UI.simulate("3|2|1|HAPPY\nBIRTHDAY|LAN HƯƠNG|CÔ GÁI ĐÁNG YÊU|HẠNH PHÚC|LUÔN TƯƠI CƯỜI|NGÀY CÀNG|XINH GÁI HƠN");
                 S.Drawing.loop(function () {
                     S.Shape.render();
                 });
@@ -501,14 +501,22 @@
                 },
                 letter: function (l) {
                     var s = 0;
+                    var lines = l.split('\n');
                     setFontSize(fontSize);
+                    // Tính kích thước font phù hợp cho dòng dài nhất
+                    var maxLine = lines.reduce(function(a, b) { return a.length > b.length ? a : b; });
                     s = Math.min(fontSize,
-                        (shapeCanvas.width / shapeContext.measureText(l).width) * 0.8 * fontSize,
-                        (shapeCanvas.height / fontSize) * (isNumber(l) ? 1 : 0.45) * fontSize);
+                        (shapeCanvas.width / shapeContext.measureText(maxLine).width) * 0.8 * fontSize,
+                        (shapeCanvas.height / fontSize) * (isNumber(maxLine) ? 1 : 0.45) * fontSize);
                     setFontSize(s);
                     shapeContext.clearRect(0, 0, shapeCanvas.width, shapeCanvas.height);
-                    setFontColor('blue'); // Đổi màu chữ tại đây (xanh dương)
-                    shapeContext.fillText(l, shapeCanvas.width / 2, shapeCanvas.height / 2);
+                    setFontColor('blue');
+                    // Vẽ từng dòng, căn giữa theo chiều dọc
+                    var totalHeight = lines.length * s;
+                    var startY = shapeCanvas.height / 2 - totalHeight / 2 + s / 2;
+                    for (var i = 0; i < lines.length; i++) {
+                        shapeContext.fillText(lines[i], shapeCanvas.width / 2, startY + i * s);
+                    }
                     return processCanvas();
                 },
                 rectangle: function (w, h) {
